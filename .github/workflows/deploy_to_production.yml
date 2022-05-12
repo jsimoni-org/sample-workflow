@@ -6,19 +6,6 @@ on:
       - main
 
 concurrency: production
-
-env:
-  TERRAFORM_VERSION: 1.1.5
-  TERRAGRUNT_VERSION: 0.36.2
-  ORCHESTRATION_ROLE_ARN: 'arn:aws:iam::119662755212:role/awssso_orchestration_role' #iam-global
-  WORKER_ROLE_ARN: 'arn:aws:iam::569715827492:role/awssso_worker_role' #ipipeline-root
-  TERRAFORM_WORKING_DIR: './applied/accounts/global/us-east-1/awssso/' #scoped to only AWS SSO Terraform code
-
-permissions:
-  id-token: write       # write permissions are needed to generate the OIDC token for AWS
-  contents: read        # read permissions are needed to retreive the code
-  issues: write         # write permissions are needed in order to create comments
-  pull-requests: write  # write permissions are needed in order to create comments
   
 jobs:
   deploy:
@@ -29,12 +16,3 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1.6.1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
